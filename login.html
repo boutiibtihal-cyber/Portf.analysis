@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al Barid Bank — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --brun:#6b5c4e; --jaune:#FFD700; --jaune2:#f0c800;
+    --bg:#f5f5f3; --blanc:#fff;
+    --border:#e5e5e2; --muted:#888;
+    --rouge:#c0392b; --vert:#16a34a;
+  }
+  body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  .wrap{display:flex;width:100%;max-width:920px;min-height:580px;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.12);}
+
+  /* GAUCHE */
+  .gauche{
+    flex:1.1;
+    background:#fff;
+    background-image: linear-gradient(150deg, #fff 0%, #faf8f5 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px 36px; text-align:center; position:relative; overflow:hidden;
+    border-right:1px solid var(--border);
+  }
+  .gauche::before{
+    content:""; position:absolute; top:-80px; right:-80px;
+    width:260px;height:260px; border-radius:50%;
+    background:rgba(255,215,0,0.08);
+  }
+  .gauche::after{
+    content:""; position:absolute; bottom:-100px; left:-60px;
+    width:300px;height:300px; border-radius:50%;
+    background:rgba(107,92,78,0.05);
+  }
+  .logo-img{width:220px;margin-bottom:32px;position:relative;z-index:1;}
+  .divider{width:48px;height:3px;background:var(--jaune);border-radius:2px;margin:0 auto 20px;position:relative;z-index:1;}
+  .titre-plateforme{font-size:20px;font-weight:700;color:var(--brun);margin-bottom:10px;position:relative;z-index:1;letter-spacing:-0.3px;}
+  .sous-titre{font-size:13px;color:#9a8c80;line-height:1.7;position:relative;z-index:1;max-width:240px;}
+  .features{margin-top:28px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;text-align:left;width:100%;}
+  .feat{display:flex;align-items:center;gap:10px;font-size:12px;color:#7a6e65;}
+  .feat-dot{width:20px;height:20px;border-radius:50%;background:var(--jaune);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#5a4a00;}
+
+  /* DROITE */
+  .droite{flex:1;background:var(--blanc);display:flex;flex-direction:column;justify-content:center;padding:52px 44px;}
+  .droite h1{font-size:24px;font-weight:700;color:#1a1a1a;margin-bottom:6px;letter-spacing:-0.5px;}
+  .droite p{font-size:14px;color:var(--muted);margin-bottom:34px;}
+  label{display:block;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+  .champ{position:relative;margin-bottom:20px;}
+  .champ input{
+    width:100%;border:1.5px solid var(--border);border-radius:12px;
+    padding:13px 16px;font-size:14px;font-family:inherit;
+    color:#1a1a1a;outline:none;background:#fafafa;
+    transition:border-color 0.2s,box-shadow 0.2s;
+  }
+  .champ input:focus{border-color:var(--brun);background:#fff;box-shadow:0 0 0 3px rgba(107,92,78,0.1);}
+  .btn-co{
+    width:100%;background:var(--brun);color:#fff;border:none;
+    border-radius:12px;padding:14px;font-size:15px;font-weight:600;
+    font-family:inherit;cursor:pointer;margin-top:4px;
+    transition:background 0.2s,transform 0.15s;
+  }
+  .btn-co:hover{background:#5a4a3e;}
+  .btn-co:active{transform:scale(0.98);}
+  .erreur{
+    background:#fef2f2;border:1.5px solid #fecaca;color:var(--rouge);
+    border-radius:10px;padding:12px 16px;font-size:13px;
+    margin-bottom:18px;display:none;
+  }
+  .aide{
+    margin-top:24px;background:#fafaf8;border:1px solid var(--border);
+    border-radius:12px;padding:14px 16px;font-size:12px;
+    color:var(--muted);line-height:2;
+  }
+  .aide span{color:var(--brun);font-weight:700;font-family:'Courier New',monospace;}
+  .footer{margin-top:20px;font-size:11px;color:#ccc;text-align:center;}
+
+  @media(max-width:680px){.gauche{display:none;}.droite{padding:40px 28px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Gauche -->
+  <div class="gauche">
+    <img class="logo-img" src="/logo" alt="Al Barid Bank">
+    <div class="divider"></div>
+    <div class="titre-plateforme">Salle des Marchés<br>Bourse de Casablanca</div>
+    <p class="sous-titre">Plateforme d'analyse de portefeuille actions BVC</p>
+    <div class="features">
+      <div class="feat"><div class="feat-dot">✓</div>Cours en temps réel BVC</div>
+      <div class="feat"><div class="feat-dot">✓</div>VaR & Expected Shortfall</div>
+      <div class="feat"><div class="feat-dot">✓</div>Ratios financiers MAD</div>
+      <div class="feat"><div class="feat-dot">✓</div>Analyse sectorielle MASI</div>
+      <div class="feat"><div class="feat-dot">✓</div>Ratio de Sharpe, Sortino, Calmar</div>
+    </div>
+  </div>
+
+  <!-- Droite -->
+  <div class="droite">
+    <h1>Bienvenue</h1>
+    <p>Connectez-vous pour accéder à votre espace d'analyse</p>
+    <div class="erreur" id="err"></div>
+    <label>Identifiant</label>
+    <div class="champ"><input type="text" id="u" placeholder="Votre identifiant" autocomplete="username"></div>
+    <label>Mot de passe</label>
+    <div class="champ"><input type="password" id="p" placeholder="Votre mot de passe" autocomplete="current-password"></div>
+    <button class="btn-co" onclick="login()">Se connecter →</button>
+    <div class="aide">
+      Accès démo &nbsp;·&nbsp; Identifiant : <span>trader</span> &nbsp;·&nbsp; Mot de passe : <span>albarid2024</span>
+    </div>
+    <div class="footer">© 2025 Al Barid Bank — Confidentiel</div>
+  </div>
+</div>
+<script>
+  document.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+  async function login(){
+    const u=document.getElementById('u').value.trim();
+    const p=document.getElementById('p').value.trim();
+    const err=document.getElementById('err');
+    err.style.display='none';
+    if(!u||!p){err.textContent='Veuillez remplir tous les champs.';err.style.display='block';return;}
+    const r=await fetch('/connexion',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({utilisateur:u,motdepasse:p})});
+    if(r.ok){window.location.href='/';}
+    else{const d=await r.json();err.textContent=d.erreur||'Erreur';err.style.display='block';}
+  }
+</script>
+</body>
+</html>
