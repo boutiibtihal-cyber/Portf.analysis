@@ -227,7 +227,7 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
     <div class="g4">
       <div class="card"><div class="lbl">Valeur de marché</div><div class="val" id="m-val">—</div><div class="sub neu" id="m-n">—</div></div>
       <div class="card"><div class="lbl">Plus/Moins-value</div><div class="val" id="m-pnl">—</div><div class="sub" id="m-pnl-pct">—</div></div>
-      <div class="card"><div class="lbl">Rendement annualisé</div><div class="val" id="m-ret">—</div><div class="sub neu">252j estimé</div></div>
+      <div class="card"><div class="lbl">Performance annualisée</div><div class="val" id="m-ret">—</div><div class="sub neu">Estimation 252 jours</div></div>
       <div class="card"><div class="lbl">Coût de revient</div><div class="val" id="m-cout">—</div><div class="sub neu">Prix d'acquisition</div></div>
     </div>
 
@@ -265,7 +265,7 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
         <div class="tscroll">
           <table>
             <thead><tr>
-              <th>Code</th><th>Société</th><th>Secteur</th><th>ISIN</th>
+              <th>Ticker</th><th>Société</th><th>Secteur</th><th>ISIN</th>
               <th>Qté</th><th>Px Achat</th><th>Px Actuel</th><th>Var J-1</th>
               <th>Valeur</th><th>+/- Value</th><th>Poids</th>
               <th>ROE</th><th>ROA</th><th>PER</th><th>DPA</th><th>Bêta</th><th>Source</th><th>Action</th>
@@ -282,6 +282,12 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
 <div id="tab-ajouter" class="tab-content">
   <div class="add-panel">
     <h3>➕ Ajouter une valeur au portefeuille</h3>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;gap:0;border:1.5px solid var(--border2);border-radius:10px;overflow:hidden;width:fit-content">
+        <button id="btn-achat" onclick="setOp('achat')" style="padding:10px 24px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:none;background:var(--vert);color:#fff">&#128200; Achat</button>
+        <button id="btn-vente" onclick="setOp('vente')" style="padding:10px 24px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:none;background:var(--surface2);color:var(--muted)">&#128201; Vente</button>
+      </div>
+    </div>
     <div class="add-row">
       <div class="add-field">
         <span class="add-lbl">Rechercher une valeur (ticker, ISIN, nom)</span>
@@ -296,12 +302,12 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
         <input class="add-input" id="add-qte" type="number" min="1" placeholder="Ex: 100">
       </div>
       <div class="add-field">
-        <span class="add-lbl">Prix d'achat (MAD)</span>
+        <span class="add-lbl" id="pa-lbl">Prix d'achat (MAD)</span>
         <input class="add-input" id="add-pa" type="number" step="0.01" placeholder="Ex: 477.50">
       </div>
       <div class="add-field">
         <span class="add-lbl">&nbsp;</span>
-        <button class="btn-add" onclick="ajouterValeur()">Ajouter →</button>
+        <button class="btn-add" id="btn-ajouter" onclick="ajouterValeur()" style="background:var(--vert)">+ Ajouter achat →</button>
       </div>
     </div>
     <div id="add-preview" style="display:none;margin-top:16px;background:var(--surface2);border-radius:10px;padding:14px;font-size:13px;">
@@ -321,7 +327,7 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
       </div>
       <div class="tscroll">
         <table>
-          <thead><tr><th>Code</th><th>Société</th><th>Qté</th><th>Px Achat</th><th>Px Actuel</th><th>Valeur</th><th>+/- Value</th><th>Statut</th><th>Retirer</th></tr></thead>
+          <thead><tr><th>Ticker</th><th>Société</th><th>Qté</th><th>Px Achat</th><th>Px Actuel</th><th>Valeur</th><th>+/- Value</th><th>Statut</th><th>Retirer</th></tr></thead>
           <tbody id="t-temp"></tbody>
         </table>
       </div>
@@ -356,7 +362,7 @@ tbody tr:hover td{background:#faf8f5;cursor:pointer;}
     </div>
     <div class="tscroll">
       <table class="sim-table">
-        <thead><tr><th>Code</th><th>Société</th><th>Secteur</th><th>Poids</th><th>Bêta</th><th>Impact estimé</th><th>Valeur avant</th><th>Valeur après</th></tr></thead>
+        <thead><tr><th>Ticker</th><th>Société</th><th>Secteur</th><th>Poids</th><th>Bêta</th><th>Impact estimé</th><th>Valeur avant</th><th>Valeur après</th></tr></thead>
         <tbody id="sim-tbody"></tbody>
       </table>
     </div>
@@ -637,6 +643,26 @@ function chargerTV(ticker, cid, interval='1'){
 // ══════════════════════════════════════════════════════════════════════════════
 //  AJOUTER / RETIRER
 // ══════════════════════════════════════════════════════════════════════════════
+let _op='achat';
+function setOp(op){
+  _op=op;
+  var ba=$('btn-achat'),bv=$('btn-vente');
+  if(op==='achat'){
+    ba.style.background='var(--vert)';ba.style.color='#fff';
+    bv.style.background='var(--surface2)';bv.style.color='var(--muted)';
+    $('pa-lbl').textContent="Prix d'achat (MAD)";
+    $('add-pa').placeholder="Ex: 477.50";
+    $('btn-ajouter').textContent="+ Ajouter achat →";
+    $('btn-ajouter').style.background='var(--vert)';
+  }else{
+    bv.style.background='var(--rouge)';bv.style.color='#fff';
+    ba.style.background='var(--surface2)';ba.style.color='var(--muted)';
+    $('pa-lbl').textContent="Prix de vente (MAD)";
+    $('add-pa').placeholder="Ex: 500.00";
+    $('btn-ajouter').textContent="− Ajouter vente →";
+    $('btn-ajouter').style.background='var(--rouge)';
+  }
+}
 let _searchTimeout=null;
 async function rechercherValeur(q){
   clearTimeout(_searchTimeout);
@@ -686,7 +712,7 @@ function ajouterValeur(){
     _ajouts.push({
       isin:_selectedISIN,ticker:_selectedInfo.ticker,
       nom:_selectedInfo.nom,secteur:_selectedInfo.secteur||'—',
-      qte,pa,prix:_selectedInfo.prix||pa
+      qte,pa,prix:_selectedInfo.prix||pa,op:_op
     });
   }
   $('search-input').value=''; $('add-qte').value=''; $('add-pa').value='';
@@ -725,7 +751,7 @@ function mettreAJourTempTable(){
       <td class="tm">${a.pa} MAD</td><td class="tm">${a.prix} MAD</td>
       <td class="tm">${mad(vm)}</td>
       <td><span class="badge ${cp}">${pnl>=0?'+':'-'}${mad(pnl)} (${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%)</span></td>
-      <td><span class="badge" style="background:rgba(255,215,0,0.2);color:#8a6800">Ajouté</span></td>
+      <td><span class="badge" style="background:var(--surface2)">"+( a.op==='vente'?'&#128201; VENTE':'&#128200; ACHAT')+“</span></td>
       <td><button class="btn-rm" onclick="retirerAjout(${i})" title="Retirer">✕</button></td>
     </tr>`;
   });
